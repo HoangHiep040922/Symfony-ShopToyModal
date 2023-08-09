@@ -1,0 +1,125 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block content %}
+<br>
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-center ">Product</th>
+            <th class="text-center "></th>
+            <th class="text-center ">Category</th>
+            <th class="text-center ">Nhân vật</th>
+            <th class="text-center ">Series</th>
+            <th class="text-center ">Hãng sản xuất</th>
+            <th class="text-center ">Kích thước</th>
+            <th class="text-center ">Price</th>
+            <th class="text-center ">Quantity</th>
+            <th class="text-center ">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products|reverse %}
+            <tr>
+                <td class="text-center">
+                    {% if product.getProductImage()|length > 0 %}
+                        {% set firstProductImage = product.getProductImage()|first %}
+                        <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                            <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                 class="card-img-top product-image" alt="Product Image" style="width: 200px"
+                                 data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                        </a>
+                    {% endif %}
+                </td>
+                <td class="align-middle">
+                    <b>{{ product.name }}</b>
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.getCategory().getCatname() }}
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.figure }}
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.series }}
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.trademark }}
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.size }}
+                </td>
+                <td class="align-middle text-center ">
+                    <span style="color: red;">{{ product.price|number_format(0, ',', '.') }}₫</span>
+                </td>
+                <td class="align-middle text-center ">
+                    {{ product.quantity }}
+                </td>
+                <td class="align-middle text-center col-1">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{{ path('dashboard_product_edit', {'id': product.id}) }}" class="nav-link button button1" style="border: 2px solid MediumSeaGreen;">Edit</a>&emsp;
+                        <a href="{{ path('dashboard_product_delete', {'id': product.id}) }}" class="nav-link button button3" style="border: 2px solid Red;">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <style>
+        .button {
+            /* Green */
+            border: none;
+            border-radius: 7px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button1 {
+            width: 60px;
+            color: #28B463;
+            border: 2px solid #28B463;
+        }
+
+        .button1:hover {
+            background-color: #28B463;
+            color: white;
+        }
+
+        .button3 {
+            width: 60px;
+            color: #CB4335;
+            border: 2px solid #CB4335;
+        }
+
+        .button3:hover {
+            background-color: #CB4335;
+            color: white;
+        }
+
+    </style>
+
+    <script>
+        // Xử lý khi di chuột vào hình ảnh
+        $(document).ready(function() {
+            $(".product-image").hover(
+                function() {
+                    // Lấy đường dẫn của hình ảnh thứ 2 từ thuộc tính data-second-image
+                    const secondImage = $(this).data("second-image");
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    const firstImage = $(this).attr("src");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh thứ 2 khi di chuột vào
+                    $(this).attr("src", secondImage);
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    $(this).data("first-image", firstImage);
+                },
+                function() {
+                    // Lấy đường dẫn của hình ảnh ban đầu từ thuộc tính data-first-image
+                    const firstImage = $(this).data("first-image");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh ban đầu khi di chuột ra ngoài
+                    $(this).attr("src", firstImage);
+                }
+            );
+        });
+    </script>
+{% endblock %}

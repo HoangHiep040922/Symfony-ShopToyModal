@@ -1,0 +1,989 @@
+    {% extends 'base.html.twig' %}
+    {#{% extends 'base.html.twig' %}#}
+    {% block body %}
+
+<style>
+    .carousel-item{
+        max-height: 700px;
+    }
+
+    .bannerlink-block {
+        display: flex;
+        flex-direction: row-reverse; /* Đảo ngược hướng của các phần tử con */
+    }
+    .bannerlink-block--image, .bannerlink-block--caption {
+        flex: 1;
+        padding: 10px; /* Căn lề cho banner và caption */
+    }
+    .bannerlink-block--image {
+        position: relative;
+    }
+
+    .bannerlink-block--caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+    }
+    .bannerlink-block--caption {
+        background-color: rgba(255, 255, 255, 0.8); /* Màu nền cho caption */
+        max-width: 50%; /* Giới hạn chiều rộng của caption */
+    }
+    .bannerlink-block--image img {
+        max-width: 100%; /* Đảm bảo hình ảnh không vượt quá khung */
+        height: auto; /* Tự động điều chỉnh chiều cao cho phù hợp */
+    }
+
+    .section-index-bannerlink .bannerlink-block--caption .action {
+        margin-top: 25px; }
+    .section-index-bannerlink .bannerlink-block--caption .action .button {
+        font-size: 12px;
+        padding: 8px 20px 8px 25px;
+        border-radius: 4px;
+        font-weight: 500; }
+    .section-index-bannerlink .bannerlink-block--caption .action .button i {
+        margin-left: 10px;
+        font-size: 14px;
+        opacity: 0.8; }
+
+
+    .button {
+        text-decoration: none;
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+        overflow: hidden;
+        padding: 12px 28px;
+        line-height: normal;
+        color: #fff;
+        background-color: red;
+        font-size: 13px;
+        font-weight: 500;
+        text-align: center;
+        letter-spacing: 1px;
+        outline: none;
+        border-radius: 2px;
+        text-transform: uppercase;
+        -webkit-transition: color 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86), border 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        transition: color 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86), border 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86); }
+
+    .button:before {
+        content: '';
+        display: block;
+        background-color: black;
+        position: absolute;
+        left: -2px;
+        top: 0;
+        right: -2px;
+        bottom: 0;
+        z-index: -1;
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+        -webkit-transform-origin: left center;
+        transform-origin: left center;
+        -webkit-transition: -webkit-transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        transition: -webkit-transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        transition: transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        transition: transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86), -webkit-transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86); }
+
+
+    @media (min-width: 992px) {
+        .button:hover, .button:focus {
+            text-decoration: none;
+            color: #ffffff; }
+        .button:hover:before, .button:focus:before {
+            -webkit-transform-origin: right center;
+            transform-origin: right center;
+            -webkit-transform: scale(0, 1);
+            transform: scale(0, 1); }}
+
+
+    .title-product {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        font-size: 30px;
+
+    }
+    .title-product:hover {
+        text-decoration: none;
+        color: red;
+        transition: 0.5s;
+    }
+    .lazyloaded{
+        width: 100%;
+        height: 900px;
+    }
+</style>
+        <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+            <!-- Indicators/dots -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+            </div>
+
+            <!-- The slideshow/carousel -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ asset('uploads/important/slide_1_img.webp')}}" alt="Los Angeles" class="d-block" style="width:100%">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('uploads/important/slide_2_img.webp')}}" alt="Chicago" class="d-block" style="width:100%">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('uploads/important/slide_3_img.webp')}}" alt="New York" class="d-block" style="width:100%">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('uploads/important/slide_4_img.webp')}}" alt="New York" class="d-block" style="width:100%">
+                </div>
+            </div>
+
+            <!-- Left and right controls/icons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+        <div class="container mt-2">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <div class="bannerlink-block groupbanner-hover ">
+                        <div class="bannerlink-block--image ">
+                            <a href="#" aria-label="Nendoroid">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/categorybanner_1_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/categorybanner_1_img.jpg?v=311" alt="Nendoroid">
+                            </a>
+                        </div>
+                        <div class="bannerlink-block--caption ">
+                            <p class="tagline">Bộ sưu tập</p>
+                            <h2 class="htitle">Nendoroid</h2>
+                            <p class="txtdesc">Dòng chibi figure được yêu thích nhất, <br> nhiều gương mặt, thoả sức tạo dáng</p>
+                            <p class="action">
+                                <a class="button" href="#">Xem ngay <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <div class="bannerlink-block groupbanner-hover">
+                        <div class="bannerlink-block--image ">
+                            <a href="#" aria-label="Pop Up Parade">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/categorybanner_2_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/categorybanner_2_img.jpg?v=311" alt="Pop Up Parade">
+                            </a>
+                        </div>
+                        <div class="bannerlink-block--caption">
+                            <p class="tagline">Bộ sưu tập</p>
+                            <h2 class="htitle">Pop Up Parade</h2>
+                            <p class="txtdesc">Dòng scale figure kích thước sinh viên, <br> giá tiểu học</p>
+                            <p class="action">
+                                <a class="button" href="#">Xem ngay  <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+        <div class="container mt-2" style="text-align: center">
+            <a href="#" class="title-product">Sản phẩm Order</a>
+            <p>Những sản phẩm đã hoặc sắp phát hành & cần đặt trước</p>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12 wrapbox-column-banner">
+                    <div class="wrapimage-container text-center">
+                        <figure class="groupbanner_image groupbanner-hover">
+                            <a class="groupbanner_image_link" href="/collections/hang-order">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/home_collection_1_banner.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/home_collection_1_banner.jpg?v=311" alt="Sản phẩm Order">
+                            </a>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-xs-12" id="productContainer">
+                    <div id="orderContainer">
+                    {% for i in 0..3 %}
+                        {% set index = currentPosition + i %}
+                        {% if index < products|length %}
+                            {% set product = products[index] %}
+                            {% if product.getCategory() is not null and product.getCategory().getCatname() == 'Hàng order' %}
+                            <div class="product-wrapper">
+                                <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                    <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                         class="card-img-top product-image" alt="Product Image"
+                                         data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                                </a>
+                                <div class="product-details">
+                                    <p class="product-name">{{ product.name }}</p>
+                                    <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                    <div class="addtocart-show">
+                                        <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                            <input type="number" name="quantity" value="1" style="display: none;">
+                                            <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set remainingProducts = products|length - currentPosition - 4 %}
+                    {% for i in 0..remainingProducts-1 %}
+                        {% set index = currentPosition + 4 + i %}
+                        {% set product = products[index] %}
+                        {% if product.getCategory() is not null and product.getCategory().getCatname() == 'Hàng order' %}
+                        <div class="product-wrapper">
+                            <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                     class="card-img-top product-image" alt="Product Image"
+                                     data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                            </a>
+                            <div class="product-details">
+                                <p class="product-name">{{ product.name }}</p>
+                                <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                <div class="addtocart-show">
+                                    <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                        <input type="number" name="quantity" value="1" style="display: none;">
+                                        <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                    <div class="move-buttons" style="left: 0">
+                        <button class="btn btn-move" onclick="moveLeftOrder()" style="border-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="move-buttons" style="right: 0">
+                        <button class="btn btn-move" onclick="moveRightOrder()" style="border-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="container mt-2" style="text-align: center">
+            <a href="#" class="title-product">Sản phẩm có sẵn</a>
+            <p>Sản phẩm đang có sẵn, bạn có thể mua ngay</p>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12" id="productContainer">
+                    <div id="availableContainer">
+                    {% for i in 0..3 %}
+                        {% set index = currentPosition + i %}
+                        {% if index < products|length %}
+                            {% set product = products[index] %}
+                            {% if product.getCategory() is not null and product.getCategory().getCatname() == 'Hàng có sẵn' %}
+                                <div class="product-wrapper">
+                                    <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                        <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                             class="card-img-top product-image" alt="Product Image"
+                                             data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                                    </a>
+                                    <div class="product-details">
+                                        <p class="product-name">{{ product.name }}</p>
+                                        <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                        <div class="addtocart-show">
+                                            <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                                <input type="number" name="quantity" value="1" style="display: none;">
+                                                <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% set remainingProducts = products|length - currentPosition - 4 %}
+                    {% for i in 0..remainingProducts-1 %}
+                        {% set index = currentPosition + 4 + i %}
+                        {% set product = products[index] %}
+                        {% if product.getCategory() is not null and product.getCategory().getCatname() == 'Hàng có sẵn' %}
+                            <div class="product-wrapper">
+                                <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                    <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                         class="card-img-top product-image" alt="Product Image"
+                                         data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                                </a>
+                                <div class="product-details">
+                                    <p class="product-name">{{ product.name }}</p>
+                                    <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                    <div class="addtocart-show">
+                                        <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                            <input type="number" name="quantity" value="1" style="display: none;">
+                                            <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                    <div class="move-buttons" style="left: 0">
+                        <button class="btn btn-move" onclick="moveLeftAvailable()" style="border-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="move-buttons" style="right: 0">
+                        <button class="btn btn-move" onclick="moveRightAvailable()" style="border-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12 wrapbox-column-banner">
+                    <div class="wrapimage-container text-center">
+                        <figure class="groupbanner_image groupbanner-hover">
+                            <a class="groupbanner_image_link" href="/collections/hang-order">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/home_collection_2_banner.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/home_collection_2_banner.jpg?v=311" alt="Sản phẩm Order">
+                            </a>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <section class="section-index-bannerfull section-mrtop">
+            <div class="groupbanner-hover text-center">
+                <a href="/collections/scale-figure" aria-label="Scale Figure">
+                    <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/home_bannerfull.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/home_bannerfull.jpg?v=311" alt="Scale Figure" style="width: 100%; height: 600px">
+                </a>
+            </div>
+        </section>
+        <br><br>
+
+        <div class="container mt-2" style="text-align: center">
+            <a href="#" class="title-product">Scale Figure</a>
+            <p>Những figure được chế tác theo tỉ lệ chuẩn</p>
+            <br>
+            <div class="row">
+                {% set count = 0 %}
+                {% for product in products %}
+                    {% if product.getCategory() is not null and product.getCategory().getCatname() == 'Scale Figure' %}
+                        {% if count < 12 %}
+                            <div class="d-flex col-3">
+                                <div class="p-2" style="width: 100%; height: 200px">
+                                    <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                        <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                             class="card-img-top product-image" alt="Product Image"
+                                             data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                                    </a>
+                                </div>
+                                <div class="p-2" style="width: 200px; margin-top: -25px; text-align: left">
+                                    <p class="product-name">{{ product.name }}</p>
+                                    <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                </div>
+                            </div>
+                            {% set count = count + 1 %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <br><br>
+
+        <section class="section-index-services section-mrtop" style="background: #f8f8f8">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 boxService-item">
+                        <div class="boxService-inner text-center">
+                            <div class="boxService-image ">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/services_item_1_img.png?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/services_item_1_img.png?v=311" alt="Sản phẩm chính hãng">
+                            </div>
+                            <div class="boxService-content">
+                                <h4>Sản phẩm chính hãng</h4><div class="txt-desc">Nhập khẩu trực tiếp từ Nhật Bản</div>
+                                <a class="txt-link" href="{{ path('about-us') }}" title="">Xem chi tiết
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4  boxService-item">
+                        <div class="boxService-inner text-center">
+                            <div class="boxService-image ">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/services_item_2_img.png?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/services_item_2_img.png?v=311" alt="Thanh toán đơn giản">
+                            </div>
+                            <div class="boxService-content">
+                                <h4>Thanh toán đơn giản</h4><div class="txt-desc">Chuyển khoản hoặc COD</div>
+                                <a class="txt-link" href="{{ path('huong-dan-dat-hang-thanh-toan-tai-japan-figure') }}" title="">Xem chi tiết
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4  boxService-item">
+                        <div class="boxService-inner text-center">
+                            <div class="boxService-image ">
+                                <img class=" ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/services_item_3_img.png?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/services_item_3_img.png?v=311" alt="Giao hàng nhanh chóng">
+                            </div>
+                            <div class="boxService-content">
+                                <h4>Giao hàng nhanh chóng</h4><div class="txt-desc">Miễn phí với đơn hàng &gt;1000K</div>
+                                <a class="txt-link" href="{{ path('category_details') }}" title="">Xem chi tiết
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+
+        <section class="section-index-latestBlog section-mrtop">
+            <div class="container">
+                <div class="section-heading text-center ">
+                    <a href="#" class="title-product">Dành cho người mới bắt đầu</a>
+                    <p>Hướng dẫn cơ bản</p>
+                </div>
+                <div class="wrapper-section-content">
+                    <div class="latestBlog owl-carousel owlCarousel-style owl-loaded owl-drag" id="owlBlog-latest">
+                        <div class="owl-stage-outer d-flex">
+                        <div class="owl-item active p-2" style="width: 366.667px; margin-right: 20px;">
+                            <article class="article-item">
+                                <div class="article-item__block">
+                                    <div class="article-item__image">
+                                        <div class="art-meta">
+								<span>
+									<time pubdate="" datetime="23 Tháng 04, 2022">23 Tháng 04, 2022</time>
+								</span>
+                                        </div>
+                                        <div class="art-image">
+                                            <a href="{{ path('theo-doi-lich-phat-hanh-japan-figure-tu-chinh-hang') }}" title="Theo dõi lịch phát hành Japan Figure từ chính hãng" aria-label="Theo dõi lịch phát hành Japan Figure từ chính hãng">
+                                                <picture>
+                                                    <source media="(max-width: 480px)" class=" lazyloading" data-srcset="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png" srcset="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png">
+                                                    <source class="owl-lazy" media="(min-width: 481px)" data-srcset="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png" srcset="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png">
+                                                    <img class=" ls-is-cached lazyloaded" data-src="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png" alt="Theo dõi lịch phát hành Japan Figure từ chính hãng" src="//file.hstatic.net/1000160337/article/lich_phat_hanh_figure_cb16b2f9925d4b33ab8f12185ee61f7f_large.png">
+                                                </picture>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="article-item__detail">
+                                        <h3 class="art-title"><a href="{{ path('theo-doi-lich-phat-hanh-japan-figure-tu-chinh-hang') }}">Theo dõi lịch phát hành Japan Figure từ chính hãng</a></h3>
+                                        <div class="art-excerpt">LỊCH PHÁT HÀNH FIGURECập nhật nhanh nhất - chính xác nhấtngay tại trang chính&nbsp;hãng&nbsp;Good Smile Company xem&nbsp;tại đây&nbsp;&nbsp;Kotobukiya xem&nbsp;tại đây&nbsp;Alter xem&nbsp;tại đây&nbsp;Megehouse xem&nbsp;tại đây&nbsp;&nbsp;Max Factory&nbsp;xem&nbsp;tại đây&nbsp;&nbsp;FREEing xem&nbsp;tại đây&nbsp;Brocoli xem&nbsp;tại đâyMIMEYOI...</div>
+                                        <p class="art-link">
+                                            <a href="{{ path('theo-doi-lich-phat-hanh-japan-figure-tu-chinh-hang') }}">
+									<span class="icoplus">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 409.6 409.6" style="enable-background:new 0 0 409.6 409.6;" xml:space="preserve"> <g> <g> <path d="M392.533,187.733H221.867V17.067C221.867,7.641,214.226,0,204.8,0s-17.067,7.641-17.067,17.067v170.667H17.067 C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h170.667v170.667c0,9.426,7.641,17.067,17.067,17.067 s17.067-7.641,17.067-17.067V221.867h170.667c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"></path> </g> </g></svg>
+									</span>
+                                                Xem thêm
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="owl-item active p-2" style="width: 366.667px; margin-right: 20px;">
+                            <article class="article-item">
+                                <div class="article-item__block">
+                                    <div class="article-item__image">
+                                        <div class="art-meta">
+								<span>
+									<time pubdate="" datetime="08 Tháng 07, 2018">08 Tháng 07, 2018</time>
+								</span>
+                                        </div>
+                                        <div class="art-image">
+                                            <a href="{{ path('vi-sao-nen-dat-mua-figure-som-tai-japanfigure-vn') }}" title="Khi nào 1 figure " có"="" tại="" nhật="" bản?"="" aria-label="Khi nào 1 figure ">
+                                            <picture>
+                                                <source media="(max-width: 480px)" class=" lazyloading" data-srcset="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg" srcset="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg">
+                                                <source class="owl-lazy" media="(min-width: 481px)" data-srcset="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg" srcset="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg">
+                                                <img class=" ls-is-cached lazyloaded" data-src="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg" alt="Khi nào 1 figure " có"="" tại="" nhật="" bản?"="" src="//file.hstatic.net/1000160337/article/vi_sao_nen_dat_hang_som_tai_japanfigure_large.jpg">
+                                            </picture>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="article-item__detail">
+                                        <h3 class="art-title"><a href="{{ path('vi-sao-nen-dat-mua-figure-som-tai-japanfigure-vn') }}">Khi nào 1 figure "có" tại Nhật Bản?</a></h3>
+                                        <div class="art-excerpt">KHI NÀO 1 FIGURE "CÓ" TẠI NHẬT BẢN?KHI "CÓ" THÌ SỐ LƯỢNG NHIỀU KHÔNG?"CÓ" RỒI MỚI ĐẶT&nbsp;LIỆU KỊP KHÔNG?&nbsp;Đây là những câu hỏi&nbsp;được rất nhiều bạn quan tâm.Trước tiên,&nbsp;Figure Nhật...</div>
+                                        <p class="art-link">
+                                            <a href="{{ path('vi-sao-nen-dat-mua-figure-som-tai-japanfigure-vn') }}">
+									<span class="icoplus">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 409.6 409.6" style="enable-background:new 0 0 409.6 409.6;" xml:space="preserve"> <g> <g> <path d="M392.533,187.733H221.867V17.067C221.867,7.641,214.226,0,204.8,0s-17.067,7.641-17.067,17.067v170.667H17.067 C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h170.667v170.667c0,9.426,7.641,17.067,17.067,17.067 s17.067-7.641,17.067-17.067V221.867h170.667c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"></path> </g> </g></svg>
+									</span>
+                                                Xem thêm
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="owl-item active p-2" style="width: 366.667px; margin-right: 20px;">
+                            <article class="article-item">
+                                <div class="article-item__block">
+                                    <div class="article-item__image">
+                                        <div class="art-meta">
+								<span>
+									<time pubdate="" datetime="29 Tháng 05, 2018">29 Tháng 05, 2018</time>
+								</span>
+                                        </div>
+                                        <div class="art-image">
+                                            <a href="{{ path('kakeibo-phuong-phap-tiet-kiem-chi-tieu-hop-ly') }}" title="Kakeibo phương pháp tiết kiệm, chi tiêu hợp lý" aria-label="Kakeibo phương pháp tiết kiệm, chi tiêu hợp lý">
+                                                <picture>
+                                                    <source media="(max-width: 480px)" class=" lazyloading" data-srcset="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg" srcset="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg">
+                                                    <source class="owl-lazy" media="(min-width: 481px)" data-srcset="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg" srcset="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg">
+                                                    <img class=" ls-is-cached lazyloaded" data-src="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg" alt="Kakeibo phương pháp tiết kiệm, chi tiêu hợp lý" src="//file.hstatic.net/1000160337/article/arisutan1401803956_large.jpeg">
+                                                </picture>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="article-item__detail">
+                                        <h3 class="art-title"><a href="{{ path('kakeibo-phuong-phap-tiet-kiem-chi-tieu-hop-ly') }}">Kakeibo phương pháp tiết kiệm, chi tiêu hợp lý</a></h3>
+                                        <div class="art-excerpt">Thận nhiêu/ trái?Bán máu bao nhiêu cho đủ?Lại tốn tiền nữa rồi...Những câu hỏi quen thuộc đều nhằm vào 1 vấn đề chung: Làm sao để chi tiêu hợp lí,...</div>
+                                        <p class="art-link">
+                                            <a href="{{ path('kakeibo-phuong-phap-tiet-kiem-chi-tieu-hop-ly') }}">
+									<span class="icoplus">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 409.6 409.6" style="enable-background:new 0 0 409.6 409.6;" xml:space="preserve"> <g> <g> <path d="M392.533,187.733H221.867V17.067C221.867,7.641,214.226,0,204.8,0s-17.067,7.641-17.067,17.067v170.667H17.067 C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h170.667v170.667c0,9.426,7.641,17.067,17.067,17.067 s17.067-7.641,17.067-17.067V221.867h170.667c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"></path> </g> </g></svg>
+									</span>
+                                                Xem thêm
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br><br><br><br>
+
+        <style>
+            .product-wrapper {
+                position: relative;
+                width: 250px;
+                height: 450px;
+                overflow: hidden;
+                transition: height 0.5s ease;
+                margin: 30px;
+                box-sizing: border-box;
+            }
+
+
+            .product-details {
+                position: absolute;
+                bottom: -20px; /* Điều chỉnh khoảng cách ban đầu từ dưới lên */
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.8);
+                text-align: center;
+                padding: 10px;
+                transition: transform 0.5s ease, opacity 0.5s ease; /* Thêm hiệu ứng opacity */
+
+            }
+
+            .addtocart-show{
+                opacity: 0; /* Ẩn các phần tử con khi chưa hover */
+                transition: transform 0.5s ease, opacity 0.5s ease;
+            }
+
+            .product-wrapper:hover .addtocart-show {
+                transform: translateY(0px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+                opacity: 1; /* Hiển thị các phần tử con khi hover */
+            }
+            .product-wrapper:hover .product-details {
+                transform: translateY(-50px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+            }
+            .addtocart-color{
+                font-weight: bold;
+                background: #ff0000;
+                color: white;
+                border-color: #ff0000;
+                transition: background 0.5s ease;
+            }
+            .addtocart-color:hover {
+                background: white;
+                color: #ff0000;
+                border-color: #ff0000;
+            }
+            .product-name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+                padding-top: 20px;
+                margin-bottom: 0;
+            }
+            #productContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            #availableContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            #orderContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            @media (max-width: 768px) {
+                #productContainer {
+                    display: block; /* Thay đổi thành hiển thị dạng block để không còn dùng flexbox */
+                }
+
+                #availableContainer {
+                    display: block; /* Thay đổi thành hiển thị dạng block để không còn dùng flexbox */
+                }
+
+                #orderContainer {
+                    display: block; /* Thay đổi thành hiển thị dạng block để không còn dùng flexbox */
+                }
+
+                .product-wrapper {
+                    width: 100%; /* Sản phẩm chiếm toàn bộ chiều rộng của #productContainer */
+                    margin: 10px 0; /* Khoảng cách giữa các sản phẩm chỉ cần cách top và bottom */
+                }
+                .product-details {
+                    max-width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của phần tử chứa */
+                    height: auto; /* Tự động điều chỉnh chiều cao tương ứng với tỷ lệ của ảnh */
+                }
+                .product-image {
+                    max-width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của phần tử chứa */
+                    height: auto; /* Tự động điều chỉnh chiều cao tương ứng với tỷ lệ của ảnh */
+                }
+            }
+
+            .move-buttons {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                display: none;
+            }
+
+            .btn-move {
+                border-radius: 50px;
+                transition: transform 0.5s; /* Thêm transition để làm hiệu ứng mượt mà */
+            }
+
+            .btn-move:hover {
+                border-color: white;
+                transform: scale(1.2);
+            }
+            #productContainer:hover .move-buttons {
+                display: block;
+            }
+
+
+
+            .boxService-image img  {
+                width: 50px;
+                height: 50px;
+            }
+            .section-index-services {
+                background-color: #f8f8f8;
+                padding: 40px 0 10px;
+            }
+            .section-index-services .rowFlex-services {
+                margin: 0 -15px;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -webkit-flex-wrap: wrap;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap; }
+            .section-index-services .boxService-item {
+                margin-bottom: 30px; }
+            .section-index-services .boxService-item:not(:last-child):before {
+                content: "";
+                width: 1px;
+                height: 90%;
+                position: absolute;
+                top: 5%;
+                background: #e5e5e5;
+                display: block;
+                right: 0; }
+            .section-index-services .boxService-image {
+                margin-bottom: 14px; }
+            .section-index-services .boxService-image img {
+                max-width: 50px; }
+            .section-index-services .boxService-content h4 {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 700;
+                margin: 0 0 12px; }
+            .section-index-services .boxService-content .txt-desc {
+                font-size: 16px; }
+            .section-index-services .boxService-content .txt-link {
+                color: black;
+                font-size: 14px;
+                font-weight: 700;
+                padding-top: 20px;
+                display: block;
+                transition: 0.5s;
+                text-decoration: none;
+            }
+            .section-index-services .boxService-content .txt-link:hover {
+                color: red; }
+            .section-index-services .boxService-content .txt-link i {
+                font-size: 22px;
+                display: inline-block;
+                vertical-align: sub;
+                margin-left: 10px;
+            }
+            @media (max-width: 991px) and (min-width: 768px) {
+                .section-index-services .boxService-content h4 {
+                    font-size: 16px; }
+                .section-index-services .boxService-content .txt-desc {
+                    font-size: 14px; }
+                .section-index-services .boxService-content .txt-link {
+                    font-size: 13px; }
+                .section-index-services .boxService-content .txt-link i {
+                    font-size: 20px; } }
+            @media (max-width: 767px) {
+                .section-index-services {
+                    padding: 30px 0 10px; }
+                .section-index-services .boxService-item:not(:last-child) {
+                    padding-bottom: 20px; }
+                .section-index-services .boxService-item:not(:last-child):before {
+                    height: 1px;
+                    width: 80%;
+                    top: auto;
+                    bottom: 0;
+                    left: 0;
+                    margin: auto; } }
+
+
+
+            .section-index-latestBlog .latestBlog .article-item__image {
+                position: relative;
+                margin-bottom: 20px;
+                overflow: hidden;
+                border-radius: 8px;
+            }
+            .section-index-latestBlog .latestBlog .article-item__image .art-image {
+                position: relative;
+                overflow: hidden;
+                background: #fff;
+                -webkit-transition: opacity 0.3s ease;
+                -ms-transition: opacity 0.3s ease;
+                transition: opacity 0.3s ease; }
+            .section-index-latestBlog .latestBlog .article-item__image .art-image img {
+                -webkit-transition: opacity 0.3s ease, transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                -ms-transition: opacity 0.3s ease, transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                transition: opacity 0.3s ease, transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                height: 300px;}
+            .section-index-latestBlog .latestBlog .article-item__image .art-meta {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                z-index: 1;
+                background: #ffffff;
+                color: #999;
+                padding: 3px 10px;
+                font-size: 12px;
+                text-transform: uppercase; }
+            .section-index-latestBlog .latestBlog .article-item__image .art-meta:after {
+                position: absolute;
+                content: '';
+                border: 1px solid #ffffff;
+                left: 2px;
+                top: -2px;
+                width: 100%;
+                height: 100%; }
+
+            .section-index-latestBlog .latestBlog .article-item__detail .art-title {
+                color: black;
+                font-size: 18px;
+                font-weight: 500;
+                margin: 10px 0; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-title a {
+                color: black;
+                text-decoration: none;}
+
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link {
+                margin: 18px 0 10px; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a {
+                position: relative;
+                z-index: 1;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                color: black;
+                font-weight: 600;
+                padding-right: 15px;
+                padding-bottom: 0px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                text-decoration: none;}
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a .icoplus {
+                height: 38px;
+                width: 38px;
+                display: inline-block;
+                border-radius: 50%;
+                margin-right: 8px;
+                color: #fff;
+                border: 2px solid #e1e1e1;
+                text-align: center;
+                -ms-transition: all .3s ease 0s;
+                -o-transition: all .3s ease 0s;
+                -moz-transition: all .3s ease 0s;
+                -webkit-transition: all .3s ease 0s;
+                transition: all .3s ease 0s; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a .icoplus svg {
+                width: 12px;
+                height: 34px;
+                fill: #000000;
+                position: relative;
+                z-index: 2; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a:before {
+                content: "";
+                height: 40px;
+                width: 40px;
+                z-index: -1;
+                position: absolute;
+                top: 0;
+                left: 0;
+                -webkit-border-radius: 30px;
+                border-radius: 30px;
+                -ms-transition: all .3s ease 0s;
+                -o-transition: all .3s ease 0s;
+                -moz-transition: all .3s ease 0s;
+                -webkit-transition: all .3s ease 0s;
+                transition: all .3s ease 0s; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a:hover:before, .section-index-latestBlog .latestBlog .article-item__detail .art-link a:focus:before {
+                width: 100%;
+                visibility: visible;
+                background-color: red; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a:hover, .section-index-latestBlog .latestBlog .article-item__detail .art-link a:focus {
+                color: #ffffff; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a:hover .icoplus {
+                text-indent: 15px;
+                border-color: red; }
+            .section-index-latestBlog .latestBlog .article-item__detail .art-link a:hover .icoplus svg {
+                fill: #ffffff; }
+
+            @media (min-width: 992px) {
+                .section-index-latestBlog .latestBlog .article-item:hover .art-image {
+                    opacity: 0.7; }
+                .section-index-latestBlog .latestBlog .article-item:hover .article-item__image img {
+                    -webkit-transform: scale(1.2);
+                    -ms-transform: scale(1.2);
+                    transform: scale(1.2); }
+                .section-index-latestBlog .owlCarousel-style {
+                    /*	&.owl-carousel .owl-nav .owl-prev,
+                            &.owl-carousel .owl-nav .owl-next{opacity:0;top:40%}
+                            &.owl-carousel:hover .owl-nav button {opacity: 1;}*/ } }
+
+            @media (max-width: 767px) {
+                .section-index-latestBlog .wrapper-section-content {
+                    margin-right: -15px;
+                    margin-left: -15px;
+                    overflow: hidden; }
+                .section-index-latestBlog .latestBlog .owl-stage {
+                    left: -45px; }
+                .section-index-latestBlog .latestBlog .article-item {
+                    padding-left: 15px; } }
+
+        </style>
+        <script>
+            // Xử lý khi di chuột vào hình ảnh
+            $(document).ready(function() {
+                $(".product-image").hover(
+                    function() {
+                        // Lấy đường dẫn của hình ảnh thứ 2 từ thuộc tính data-second-image
+                        const secondImage = $(this).data("second-image");
+                        // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                        const firstImage = $(this).attr("src");
+                        // Thay đổi đường dẫn hình ảnh thành hình ảnh thứ 2 khi di chuột vào
+                        $(this).attr("src", secondImage);
+                        // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                        $(this).data("first-image", firstImage);
+                    },
+                    function() {
+                        // Lấy đường dẫn của hình ảnh ban đầu từ thuộc tính data-first-image
+                        const firstImage = $(this).data("first-image");
+                        // Thay đổi đường dẫn hình ảnh thành hình ảnh ban đầu khi di chuột ra ngoài
+                        $(this).attr("src", firstImage);
+                    }
+                );
+            });
+
+
+            var orderContainer = document.getElementById("orderContainer");
+            var availableContainer = document.getElementById("availableContainer");
+            var orderItems = orderContainer.getElementsByClassName("product-wrapper");
+            var availableItems = availableContainer.getElementsByClassName("product-wrapper");
+            var numItemsPerPage = 4;
+
+            function moveLeftOrder() {
+                if (currentPositionOrder > 0) {
+                    currentPositionOrder -= numItemsPerPage;
+                    updateProductDisplayOrder();
+                }
+            }
+
+            function moveRightOrder() {
+                if (currentPositionOrder + numItemsPerPage < orderItems.length) {
+                    currentPositionOrder += numItemsPerPage;
+                    updateProductDisplayOrder();
+                }
+            }
+
+            function moveLeftAvailable() {
+                if (currentPositionAvailable > 0) {
+                    currentPositionAvailable -= numItemsPerPage;
+                    updateProductDisplayAvailable();
+                }
+            }
+
+            function moveRightAvailable() {
+                if (currentPositionAvailable + numItemsPerPage < availableItems.length) {
+                    currentPositionAvailable += numItemsPerPage;
+                    updateProductDisplayAvailable();
+                }
+            }
+
+            function updateProductDisplayOrder() {
+                for (var i = 0; i < orderItems.length; i++) {
+                    if (i >= currentPositionOrder && i < currentPositionOrder + numItemsPerPage) {
+                        orderItems[i].style.display = "block";
+                    } else {
+                        orderItems[i].style.display = "none";
+                    }
+                }
+            }
+
+            function updateProductDisplayAvailable() {
+                for (var i = 0; i < availableItems.length; i++) {
+                    if (i >= currentPositionAvailable && i < currentPositionAvailable + numItemsPerPage) {
+                        availableItems[i].style.display = "block";
+                    } else {
+                        availableItems[i].style.display = "none";
+                    }
+                }
+            }
+
+            var currentPositionOrder = 0;
+            var currentPositionAvailable = 0;
+            updateProductDisplayOrder();
+            updateProductDisplayAvailable();
+        </script>
+    {% endblock %}
+

@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block body %}
+    <div class="collection-banner-header">
+        <img class=" lazyloaded" data-src="https://file.hstatic.net/1000160337/collection/7_f854828e099144df8ab3adc6f9eb1472.jpg" src="https://file.hstatic.net/1000160337/collection/7_f854828e099144df8ab3adc6f9eb1472.jpg" alt="Artbook">
+    </div>
+    <div class="container"><br>
+        <div style="text-align: center">
+        <h3><b>Search</b></h3>
+        <h4 style="padding-bottom: 10px">Search Results for "{{ keyword }}"</h4>
+            <div style="background: black; height: 4px; width: 100px; margin-left: 46%; border-radius: 50px"></div>
+        </div><br><br><br>
+        {% if products is not empty %}
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-3">
+                            <div class="product-wrapper">
+                                <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                                    <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                                         class="card-img-top product-image" alt="Product Image"
+                                         data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                                </a>
+                                <div class="product-details">
+                                    <p class="product-name">{{ product.name }}</p>
+                                    <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                                    <div class="addtocart-show">
+                                        <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                            <input type="number" name="quantity" value="1" style="display: none;">
+                                            <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div><br><br><br>
+
+    <style>
+        .product-wrapper {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+            transition: height 0.5s ease;
+        }
+
+
+        .product-details {
+            position: absolute;
+            bottom: -20px; /* Điều chỉnh khoảng cách ban đầu từ dưới lên */
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Thêm hiệu ứng opacity */
+
+        }
+
+        .addtocart-show{
+            opacity: 0; /* Ẩn các phần tử con khi chưa hover */
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .product-wrapper:hover .addtocart-show {
+            transform: translateY(0px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+            opacity: 1; /* Hiển thị các phần tử con khi hover */
+        }
+        .product-wrapper:hover .product-details {
+            transform: translateY(-50px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+        }
+        .addtocart-color{
+            font-weight: bold;
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+            transition: background 0.5s ease;
+        }
+        .addtocart-color:hover {
+            background: white;
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+    </style>
+    <script>
+        // Xử lý khi di chuột vào hình ảnh
+        $(document).ready(function() {
+            $(".product-image").hover(
+                function() {
+                    // Lấy đường dẫn của hình ảnh thứ 2 từ thuộc tính data-second-image
+                    const secondImage = $(this).data("second-image");
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    const firstImage = $(this).attr("src");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh thứ 2 khi di chuột vào
+                    $(this).attr("src", secondImage);
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    $(this).data("first-image", firstImage);
+                },
+                function() {
+                    // Lấy đường dẫn của hình ảnh ban đầu từ thuộc tính data-first-image
+                    const firstImage = $(this).data("first-image");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh ban đầu khi di chuột ra ngoài
+                    $(this).attr("src", firstImage);
+                }
+            );
+        });
+    </script>
+{% endblock %}

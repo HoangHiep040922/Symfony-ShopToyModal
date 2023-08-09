@@ -1,0 +1,216 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <style>
+        .title_filter {
+            background-color: #ffffff;
+            color: black;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid rgba(139, 137, 137, 0.4);
+            cursor: pointer;
+            width: 300px;
+        }
+
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .filter-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid rgba(139, 137, 137, 0.4);
+            margin-top: -16px;
+            z-index: 1;
+        }
+
+        .filter-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .filter-dropdown-content a:hover {background-color: #ffffff;
+        color: red}
+
+        .filter-dropdown:hover .filter-dropdown-content {
+            display: block;
+        }
+
+        .filter-dropdown:hover .title_filter {
+            background-color: #ffffff;
+        }
+    </style>
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="end">{{ categories.catname }}</li>
+    </ul>
+    <div class="collection-banner-header" style="margin-top: -16px">
+        <img class=" lazyloaded" data-src="https://file.hstatic.net/1000160337/collection/8_d317670c3ec74e70b92f7ab64137d304.jpg" src="https://file.hstatic.net/1000160337/collection/8_d317670c3ec74e70b92f7ab64137d304.jpg" alt="Các loại figure khác">
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <h2>{{ categories.catname }}</h2>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="filter-dropdown">
+                    <p class="title_filter">
+                        <span class="icon-filter"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i></span>
+                        Sắp xếp
+                        <span class="icon-filter" style="margin-left: 65%; color: #bababa; font-size: 18px"><i class="fa fa-sort-down" aria-hidden="true"></i></span>
+                    </p>
+                    <div class="filter-dropdown-content" style="width: 100%">
+                        <a href="#tang-dan" onclick="sortProducts('priceAsc')">Giá: Tăng dần</a>
+                        <a href="#giam-dan" onclick="sortProducts('priceDesc')">Giá: Giảm dần</a>
+                        <a href="#a-z" onclick="sortProducts('nameAsc')">Tên: A-Z</a>
+                        <a href="#z-a" onclick="sortProducts('nameDesc')">Tên: Z-A</a>
+                        <a href="#cu-nhat" onclick="sortProducts('oldest')">Cũ nhất</a>
+                        <a href="#moi-nhat" onclick="sortProducts('newest')">Mới nhất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for product in products %}
+                <div class="col-3">
+                    <div class="product-wrapper" style="height: 600px">
+                        <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                        <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                             class="card-img-top product-image" alt="Product Image" style="width: 100%"
+                             data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                        </a>
+                        <div class="product-details">
+                            <span class="product-name">{{ product.name }}</span><br>
+                            <p class="product-date">{{ product.date|date('F j,Y') }}</p>
+                            <span class="product-price"><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                            <div class="addtocart-show">
+                                <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                    <input type="number" name="quantity" value="1" style="display: none;">
+                                    <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .product-wrapper {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            transition: height 0.5s ease;
+        }
+
+
+        .product-details {
+            position: absolute;
+            bottom: -20px; /* Điều chỉnh khoảng cách ban đầu từ dưới lên */
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Thêm hiệu ứng opacity */
+            transform: translateY(0px);
+            opacity: 1;
+
+        }
+
+        .addtocart-show{
+            opacity: 0; /* Ẩn các phần tử con khi chưa hover */
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            transform: translateY(50px);
+        }
+
+        .product-wrapper:hover .addtocart-show {
+            transform: translateY(0px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+            opacity: 1; /* Hiển thị các phần tử con khi hover */
+        }
+        .product-wrapper:hover .product-details {
+            transform: translateY(-50px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+        }
+        .addtocart-color{
+            font-weight: bold;
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+            transition: background 0.5s ease;
+        }
+        .addtocart-color:hover {
+            background: white;
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+
+    </style>
+
+
+    <script>
+        // Xử lý khi di chuột vào hình ảnh
+        $(document).ready(function() {
+            $(".product-image").hover(
+                function() {
+                    // Lấy đường dẫn của hình ảnh thứ 2 từ thuộc tính data-second-image
+                    const secondImage = $(this).data("second-image");
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    const firstImage = $(this).attr("src");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh thứ 2 khi di chuột vào
+                    $(this).attr("src", secondImage);
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    $(this).data("first-image", firstImage);
+                },
+                function() {
+                    // Lấy đường dẫn của hình ảnh ban đầu từ thuộc tính data-first-image
+                    const firstImage = $(this).data("first-image");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh ban đầu khi di chuột ra ngoài
+                    $(this).attr("src", firstImage);
+                }
+            );
+        });
+
+
+        function sortProducts(sortType) {
+            const products = document.querySelectorAll('.col-3');
+            const sortedProducts = Array.from(products).sort((a, b) => {
+                const aName = a.querySelector('.product-name').innerText;
+                const bName = b.querySelector('.product-name').innerText;
+                const aPrice = parseFloat(a.querySelector('.product-price').innerText.replace('₫', '').replace(',', '').trim());
+                const bPrice = parseFloat(b.querySelector('.product-price').innerText.replace('₫', '').replace(',', '').trim());
+                const aDate = new Date(a.querySelector('.product-date').innerText);
+                const bDate = new Date(b.querySelector('.product-date').innerText);
+
+                switch (sortType) {
+                    case 'priceAsc':
+                        return aPrice - bPrice;
+                    case 'priceDesc':
+                        return bPrice - aPrice;
+                    case 'nameAsc':
+                        return aName.localeCompare(bName);
+                    case 'nameDesc':
+                        return bName.localeCompare(aName);
+                    case 'oldest':
+                        return aDate - bDate;
+                    case 'newest':
+                        return bDate - aDate;
+                    default:
+                        return 0;
+                }
+            });
+
+            const container = document.querySelector('.row');
+            sortedProducts.forEach(product => {
+                container.appendChild(product);
+            });
+        }
+    </script>
+
+
+{% endblock %}

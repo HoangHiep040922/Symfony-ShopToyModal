@@ -1,0 +1,424 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .product-thumbnails .thumbnail {
+            border: 2px solid transparent; /* Set initial border style for thumbnails */
+            margin-bottom: 10px;
+        }
+
+        .product-thumbnails .thumbnail.active {
+            border-color: blue; /* Set border style for the active thumbnail */
+        }
+
+        .product-main-image {
+            position: relative;
+        }
+
+        .product-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .product-navigation button {
+            background-color: rgba(255, 255, 255, 0); /* Set background color for navigation buttons */
+            border: none;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 525px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+        }
+
+        .modal-content {
+            display: block;
+            width: 80%;
+            height: 80%;
+            margin: auto;
+            margin-top: 5%; /* Space from top */
+        }
+
+        .modal-img {
+            max-width: 700px;
+            max-height: 100%;
+        }
+
+        .close-btn {
+            color: #FFF;
+            font-size: 40px;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            cursor: pointer;
+        }
+        .addtocart {
+            width: 85%;
+            margin-left: 20px;
+            font-weight: bold;
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+            transition: background 0.5s ease;
+        }
+        .addtocart:hover {
+            background: white;
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+
+
+
+        .product-deliverly li {
+            display: block; /* Sử dụng block để các dòng xuất hiện từ trên xuống */
+            margin-bottom: 10px;
+            font-size: 15px;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .product-deliverly li img {
+            position: absolute;
+            left: -50px; /* Điều chỉnh vị trí của ảnh */
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 10px;
+            width: 30px;
+        }
+        .bi-check-lg{
+            font-size: 20px;
+        }
+        .product-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 200px;
+            padding-top: 20px;
+            margin-bottom: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="end">{{ products.name }}</li>
+    </ul>
+
+    <div class="container">
+        <div class="row">
+            <div class="row col-6">
+                <div class="product-thumbnails col-2">
+                    {% for image in products.getProductImage() %}
+                        <img src="{{ asset('uploads/image/' ~ image.getImagePath()) }}" class="thumbnail{% if loop.first %} active{% endif %}" height="70px" width="70px" alt="Thumbnail" data-large-image="{{ asset('uploads/image/' ~ image.getImagePath()) }}">
+                    {% endfor %}
+                </div>
+                <div class="product-main-image col-10" style="margin-left: -20px">
+                    {% if products.getProductImage().count() > 0 %}
+                        <img src="{{ asset('uploads/image/' ~ products.getProductImage().first().getImagePath()) }}" class="product-image" alt="Product Image">
+                    {% else %}
+                        <p>No images available</p>
+                    {% endif %}
+                    <div class="product-navigation">
+                        <button class="prev-btn">&lt;</button>
+                        <button class="next-btn">&gt;</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <h4><b>{{ products.name }}</b></h4>
+                <p style="color: red; font-size: 30px"><b>{{ products.price|number_format(0, ',', ',') }}₫</b></p>
+                <p>Category:  {{ products.getCategory().catname }}</p>
+                <hr>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form.quantity, {'attr': { 'value': '1', 'style': 'width: 50px; border-radius: 5px; height: 34px; text-align: center'}}) }}
+                    {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning addtocart'}}) }}
+                    {{ form_end(form) }}
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-warning addtocart">ADD TO CART</a>
+                {% endif %}
+                <br>
+
+                <div class="product-deliverly">
+                    <ul class="infoList-deliverly">
+                        <li>
+                          <span>
+                            <img class="ls-is-cached lazyloaded"
+                                    data-src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_1_ico.png?v=311"
+                                    src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_1_ico.png?v=311"
+                                    alt="Sản phẩm chính hãng từ Nhật Bản. Trước khi bạn đặt mua: vui lòng check lại giá hiện tại với admin, vì khả năng giá đã thay đổi so với lần cập nhật gần nhất, hoặc hết hàng, hết suất order. Do giới hạn số lượng, figure Nhật sẽ hiếm dần theo thời gian, dẫn tới giá tăng."
+                            />
+                          </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                            </svg> <strong>Sản phẩm chính hãng từ Nhật Bản.</strong><br>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                            </svg> <strong>Trước khi bạn đặt mua:</strong> vui
+                                                lòng check lại giá hiện tại với admin, vì khả năng giá đã thay đổi so với
+                                                lần cập nhật gần nhất, hoặc hết hàng, hết suất order. Do giới hạn số
+                                                lượng, figure Nhật sẽ hiếm dần theo thời gian, dẫn tới giá tăng.
+                                            </li>
+
+                                            <li>
+                          <span>
+                            <img
+                                    class="ls-is-cached lazyloaded"
+                                    data-src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_2_ico.png?v=311"
+                                    src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_2_ico.png?v=311"
+                                    alt="Với sản phẩm CÓ SẴN, bạn sẽ được giao ngay.
+                    Với sản phẩm ĐẶT TRƯỚC, bạn cần cọc 50% giá trị sản phẩm. Hàng về VN khoảng 2-3 tuần sau khi phát hành. Lịch phát hành dự kiến như thông tin chi tiết bên dưới."
+                            />
+                          </span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                </svg> Với sản phẩm
+                                                <strong>CÓ SẴN, bạn sẽ được giao ngay.</strong><br />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                </svg> Với sản phẩm
+                                                <strong>ĐẶT TRƯỚC, bạn cần cọc 50% giá trị sản phẩm.</strong> Hàng về VN
+                                                khoảng 2-3 tuần sau khi phát hành. Lịch phát hành dự kiến như thông tin
+                                                chi tiết bên dưới.<br />
+                                            </li>
+
+                                            <li>
+                          <span>
+                            <img
+                                    class="ls-is-cached lazyloaded"
+                                    data-src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_3_ico.png?v=311"
+                                    src="//theme.hstatic.net/1000160337/1000885200/14/product_deliverly_3_ico.png?v=311"
+                                    alt="Giao hàng tận nơi
+                    Miễn phí ship với các đơn hàng >1000K
+                    Vui lòng kiểm tra sản phẩm khi nhận bưu kiện"
+                            />
+                          </span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                </svg> Giao hàng tận nơi<br />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                </svg> Miễn phí ship với các đơn hàng &gt;1000K
+                            <br />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                </svg> Vui lòng kiểm tra sản phẩm khi nhận bưu kiện
+                        </li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <div style="font-size: 15px">
+                    <h4>THÔNG TIN SẢN PHẨM</h4>
+                    <p>Nhân vật: {{ products.figure }}</p>
+                    <p>Series: {{ products.series }}</p>
+                    <p>Hãng sản xuất: {{ products.trademark }}</p>
+                    <p>Kích thước: {{ products.size }}</p>
+                    <p>Phát hành: {{ products.date|date('F j,Y') }}</p>
+                </div>
+            </div>
+        </div>
+        <hr style="border: none;
+            height: 1px;
+            background-color: black;
+            width: 100vw; /* Độ rộng của đường kẻ ngang bằng độ rộng của viewport */
+            margin-left: -310px;
+            padding: 0;">
+        <br>
+        <h3 style="text-align: center; font-size: 34px"><b>Sản Phẩm Liên Quan</b></h3><br><br>
+        <div class="row">
+            {% for product in latestProducts|slice(0, 6) %}
+                <div class="col-2">
+                    <div class="product-wrapper">
+                        <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;">
+                        <img src="{{ asset('uploads/image/' ~ product.getProductImage()[0].getImagePath()) }}"
+                             class="card-img-top product-image" alt="Product Image" style="width: 200px"
+                             data-second-image="{{ asset('uploads/image/' ~ product.getProductImage()[1].getImagePath()) }}">
+                        </a>
+                        <div class="product-details">
+                            <p class="product-name">{{ product.name }}</p>
+                            <span><b>{{ product.price|number_format(0, ',', ',') }}₫</b></span>
+                            <div class="addtocart-show">
+                                <form method="POST" action="{{ path('add_to_cart', {'id': product.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('add_to_cart' ~ product.id) }}">
+                                    <input type="number" name="quantity" value="1" style="display: none;">
+                                    <button type="submit" class="btn btn-warning addtocart-color">ADD TO CART</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div><br><br><br>
+
+    <style>
+        .product-wrapper {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            transition: height 0.5s ease;
+        }
+
+
+        .product-details {
+            position: absolute;
+            bottom: -20px; /* Điều chỉnh khoảng cách ban đầu từ dưới lên */
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Thêm hiệu ứng opacity */
+
+        }
+
+        .addtocart-show{
+            opacity: 0; /* Ẩn các phần tử con khi chưa hover */
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .product-wrapper:hover .addtocart-show {
+            transform: translateY(0px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+            opacity: 1; /* Hiển thị các phần tử con khi hover */
+        }
+        .product-wrapper:hover .product-details {
+            transform: translateY(-50px); /* Điều chỉnh khoảng cách di chuyển từ dưới lên */
+        }
+        .addtocart-color{
+            font-weight: bold;
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+            transition: background 0.5s ease;
+        }
+        .addtocart-color:hover {
+            background: white;
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+    </style>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img class="modal-content modal-img" id="largeImage">
+    </div>
+
+    <script>
+        const mainImage = document.querySelector('.product-main-image img');
+        const thumbnails = document.querySelectorAll('.product-thumbnails img');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        let currentImageIndex = 0;
+
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                // Remove 'active' class from all thumbnails
+                thumbnails.forEach(tn => tn.classList.remove('active'));
+                // Add 'active' class to the clicked thumbnail
+                thumbnail.classList.add('active');
+
+                mainImage.src = thumbnail.dataset.largeImage;
+                currentImageIndex = index;
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex - 1 + thumbnails.length) % thumbnails.length;
+            displayImageAtIndex(currentImageIndex);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex + 1) % thumbnails.length;
+            displayImageAtIndex(currentImageIndex);
+        });
+
+        function displayImageAtIndex(index) {
+            const thumbnail = thumbnails[index];
+            // Remove 'active' class from all thumbnails
+            thumbnails.forEach(tn => tn.classList.remove('active'));
+            // Add 'active' class to the current thumbnail
+            thumbnail.classList.add('active');
+
+            mainImage.src = thumbnail.dataset.largeImage;
+        }
+
+        // Modal functions
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('largeImage');
+
+        function openModal() {
+            modal.style.display = 'block';
+            modalImg.src = mainImage.src;
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        mainImage.addEventListener('click', openModal);
+
+        // Close the modal when clicking outside the modal image
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Xử lý khi di chuột vào hình ảnh
+        $(document).ready(function() {
+            $(".product-image").hover(
+                function() {
+                    // Lấy đường dẫn của hình ảnh thứ 2 từ thuộc tính data-second-image
+                    const secondImage = $(this).data("second-image");
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    const firstImage = $(this).attr("src");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh thứ 2 khi di chuột vào
+                    $(this).attr("src", secondImage);
+                    // Lưu đường dẫn của hình ảnh ban đầu vào thuộc tính data-first-image
+                    $(this).data("first-image", firstImage);
+                },
+                function() {
+                    // Lấy đường dẫn của hình ảnh ban đầu từ thuộc tính data-first-image
+                    const firstImage = $(this).data("first-image");
+                    // Thay đổi đường dẫn hình ảnh thành hình ảnh ban đầu khi di chuột ra ngoài
+                    $(this).attr("src", firstImage);
+                }
+            );
+        });
+
+        // JavaScript to apply the effect when hovering on the product wrapper
+        document.querySelectorAll('.product-wrapper').forEach(function(wrapper) {
+            wrapper.addEventListener('mouseenter', function() {
+                this.classList.add('hovered');
+            });
+
+            wrapper.addEventListener('mouseleave', function() {
+                this.classList.remove('hovered');
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset ('uploads/important/favicon.webp') }}">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link rel = "stylesheet" href ="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <title>{% block title %}Taki Shop{% endblock %}</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    {% block stylesheets %}{% endblock %}
+
+
+</head>
+
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<style>
+    body{
+        background-color: #ffffff
+    }
+    .nav-item{
+        margin-left: 50px;
+    }
+    .search{
+        width: 500px;
+    }
+</style>
+
+<nav class="navbar navbar-expand-sm bg-light justify-content-center">
+    <div id="carousel" class="carousel">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <span class="nav-link">Sàn giao dịch figure chính hãng <a class="btn btn-nav-color" href="https://t.me/joinchat/Gn7UwkXl5DwWH4brm8NQTA">Tham gia</a></span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">Freeship toàn quốc với đơn hàng từ <a class="btn btn-nav-color" href="{{path('category_details')}}">1000K</a></span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link">Figure bạn thích hiện đang mở order <a class="btn btn-nav-color" href="{{path('category_details')}}">Xem ngay</a></span>
+            </li>
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-sm justify-content-center">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a href="/"><img src="{{ asset('uploads/image/logo.webp')}}" width="150" alt="Logo"></a>
+        </li>
+        <li class="nav-item" style="padding-top: 10px">
+            <form class="navbar-form" method="GET" action="{{ path('product_search') }}">
+                <div class="input-group search"  style="border-radius: 5px">
+                    <input type="text" class="form-control" placeholder="Search" name="search" id="searchInput">
+                    <button class="btn btn-default" type="submit" style="background: #ed1c24; color: white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" font-size="18px">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </li>
+        <li class="nav-item">
+            {% if app.user %}
+                <div class="col" style="padding-top: 10px">
+                    <div class="dropdown">
+                        <a type="button" data-bs-toggle="dropdown" style="width: 60px">
+                            <img src="{{ asset('uploads/image/' ~ app.user.avatar) }}" alt="" style="width:45px; height: 45px; border: 0" class="rounded-pill">
+                        </a>
+                        <ul class="dropdown-menu custom-menu" style="padding: 10px; width: 270px">
+                            <li style="padding-top: 7px">
+                                <span>THÔNG TIN TÀI KHOẢN</span>
+                            </li>
+                            <div style="height: 5px"></div>
+                            <div style="background: rgba(172,171,171,0.47); height: 1px"></div>
+                            <div style="height: 5px"></div>
+                            <li>
+                                <a class="d-flex align-items-center dropdown-item mb-0 custom-link profile-text" href="{{ path('app_user') }}">
+                                    <div style="font-weight: bold;">{{ app.user.username }}</div>
+                                </a>
+                                <ul style="text-align: left;">
+                                    <li class="profile-link"><a class="profile-text" href="{{ path('app_user') }}">
+                                            Tài khoản của tôi</a>
+                                    </li>
+                                    <li class="profile-link"><a class="profile-text" href="#">
+                                            Danh sách địa chỉ</a>
+                                    </li>
+                                    <li class="profile-link"><a class="profile-text" href="{{ path('purchase_order') }}">
+                                            Danh sách sản phẩm đã mua</a>
+                                    </li>
+                                    <li class="profile-link"><a class="profile-text" href="{{ path('app_logout') }}">
+                                            Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div style="height: 5px"></div>
+                                <div style="background: rgba(172,171,171,0.47); height: 1px"></div>
+                                <div style="height: 5px"></div>
+                                <div style="height: 10px"></div>
+                                <li>
+                                    <a class="d-flex align-items-center dropdown-item mb-0 custom-link profile-text" href="{{ path('dashboard_index') }}" style="height: 40px">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-incognito" viewBox="0 0 16 16" style="font-size: 30px">
+                                            <path fill-rule="evenodd" d="m4.736 1.968-.892 3.269-.014.058C2.113 5.568 1 6.006 1 6.5 1 7.328 4.134 8 8 8s7-.672 7-1.5c0-.494-1.113-.932-2.83-1.205a1.032 1.032 0 0 0-.014-.058l-.892-3.27c-.146-.533-.698-.849-1.239-.734C9.411 1.363 8.62 1.5 8 1.5c-.62 0-1.411-.136-2.025-.267-.541-.115-1.093.2-1.239.735Zm.015 3.867a.25.25 0 0 1 .274-.224c.9.092 1.91.143 2.975.143a29.58 29.58 0 0 0 2.975-.143.25.25 0 0 1 .05.498c-.918.093-1.944.145-3.025.145s-2.107-.052-3.025-.145a.25.25 0 0 1-.224-.274ZM3.5 10h2a.5.5 0 0 1 .5.5v1a1.5 1.5 0 0 1-3 0v-1a.5.5 0 0 1 .5-.5Zm-1.5.5c0-.175.03-.344.085-.5H2a.5.5 0 0 1 0-1h3.5a1.5 1.5 0 0 1 1.488 1.312 3.5 3.5 0 0 1 2.024 0A1.5 1.5 0 0 1 10.5 9H14a.5.5 0 0 1 0 1h-.085c.055.156.085.325.085.5v1a2.5 2.5 0 0 1-5 0v-.14l-.21-.07a2.5 2.5 0 0 0-1.58 0l-.21.07v.14a2.5 2.5 0 0 1-5 0v-1Zm8.5-.5h2a.5.5 0 0 1 .5.5v1a1.5 1.5 0 0 1-3 0v-1a.5.5 0 0 1 .5-.5Z"/>
+                                        </svg>&ensp;
+                                        <div style="font-weight: bold;">Dashboard</div>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col d-flex" style="padding-top: 10px">
+                    <div style="padding-right: 10px"><a class="btn btn-signup p-2" style="font-family: Comic Sans MS cursive; width: 80px" href="{{ path('app_register') }}">Sign Up</a></div>
+                    <div><a class="btn btn-login p-2" style="font-family: Comic Sans MS cursive" href="{{ path('app_login') }}">Login</a></div>
+                </div>
+            {% endif %}
+        </li>
+        <li class="nav-item" style="padding-top: 10px">
+            <a href="{{ path('cart') }}" class="btn btn-unstyled" style="border: none">
+                <svg xmlns="http://www.w3.org/2000/svg" font-size="20" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                <span id="cart-count" class="badge bg-danger position-absolute start-85 translate-middle" style="font-size: 10px; top: 25px">{{ cart.items.count }}</span>
+                cart
+            </a>
+        </li>
+    </ul>
+</nav>
+<nav class="navbar navbar-expand-sm justify-content-center">
+    <ul class="navbar-nav">
+        <li class="nav-item ke1">
+            <a class="nav-link ke2" href="/">Home</a>
+        </li>
+        <li class="nav-item ke1">
+            <a class="nav-link ke2" href="{{ path('about-us') }}">Introduce</a>
+        </li>
+        <li class="nav-item ke1 dropdown">
+            <a class="nav-link ke2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Instruct</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('about-us') }}">What is figure?</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('cac-chung-loai-figure') }}">Types of Figures</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('cach-phan-biet-figure-nhat-chinh-hang-hang-nhai-tu-trung-quoc') }}">Distinguishing between real and fake</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('hoi-dap') }}">Q&A</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('huong-dan-dat-hang-thanh-toan-tai-japan-figure') }}">Order & Pay</a></li>
+            </ul>
+        </li>
+        <li class="nav-item ke1 dropdown">
+            <a class="nav-link ke2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Category</a>
+            <ul class="dropdown-menu">
+                {% for category in categories %}
+                    <li><a class="dropdown-item" href="{{path('category_view',{'id':category.id})}}">{{ category.catname }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                {% endfor %}
+                <li><a class="dropdown-item" href="{{path('category_details')}}">Category List</a></li>
+            </ul>
+        </li>
+        <li class="nav-item ke1 dropdown">
+            <a class="nav-link ke2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Connect</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="https://t.me/joinchat/Gn7UwkXl5DwWH4brm8NQTA">Japan Figure Trading</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://www.facebook.com/japanfigure">Facebook</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://www.instagram.com/japanfigure.vn/">Instagram</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://www.youtube.com/channel/UCoOXLGsa5joTIO05WF7ZGGA">Youtube</a></li>
+            </ul>
+        </li>
+        <li class="nav-item ke1 dropdown">
+            <a class="nav-link ke2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Contact</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{path('lien-he')}}">Address</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{path('so-tai-khoan')}}">Account number</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+    </button>
+</nav>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+
+
+{% block body %}{% endblock %}
+
+{{ include('footer.html.twig') }}
+
+{% block javascripts %}{% endblock %}
+
+</body>
+<style>
+    #myBtn {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed/sticky position */
+        bottom: 20px; /* Place the button at the bottom of the page */
+        right: 30px; /* Place the button 30px from the right */
+        z-index: 99; /* Make sure it does not overlap */
+        border-color: #acacac; /* Remove borders */
+        outline: none; /* Remove outline */
+        background-color: #ffffff; /* Set a background color */
+        color: black; /* Text color */
+        cursor: pointer; /* Add a mouse pointer on hover */
+        padding: 10px; /* Some padding */
+        border-radius: 10px; /* Rounded corners */
+        font-size: 18px; /* Increase font size */
+    }
+
+    #myBtn:hover {
+        background-color: #000000; /* Add a dark-grey background on hover */
+        color: white;
+    }
+        /* Hiệu ứng chuyển động */
+    .ke1::after,
+    .ke2.dropdown-toggle::before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        background-color: black; /* Màu sắc đường kẻ dưới */
+        transition: width 0.3s ease;
+    }
+
+    .ke1:hover::after,
+    .ke2.dropdown-toggle:hover::before {
+        width: 100%;
+    }
+
+    /* Hiển thị danh sách thả xuống */
+    .dropdown-menu {
+        display: none;
+        border-radius: 0;
+        margin-top: 2px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+        border-color: rgba(0, 0, 0, 0);
+        padding: 10px;
+    }
+
+    .dropdown-item:hover {
+        background: none;
+    }
+
+    .ke2.dropdown-toggle:hover + .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    /* Xóa đường kẻ thứ hai ở Category */
+    .ke1.dropdown::after {
+        display: none;
+    }
+
+
+        ul.breadcrumb {
+            padding: 10px 16px;
+            list-style: none;
+            background-color: #f5f5f5;
+        }
+        ul.breadcrumb li {
+            display: inline;
+            font-size: 13px;
+        }
+        ul.breadcrumb li+li:before {
+            padding: 8px;
+            color: black;
+            content: "/\00a0";
+        }
+        ul.breadcrumb li a {
+            color: black;
+            text-decoration: none;
+        }
+        ul.breadcrumb li a:hover {
+            color: #777777;
+            text-decoration: underline;
+        }
+    .end{
+        color: #777777;
+    }
+
+        /* Hiển thị chỉ một thẻ đầu tiên */
+        .carousel .navbar-nav li:not(:first-child) {
+            display: none;
+        }
+
+        /* Hiệu ứng xoay vòng */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+
+        /* Áp dụng hiệu ứng cho thẻ được hiển thị */
+        .carousel .navbar-nav li {
+            animation: fadeInOut 10s infinite;
+        }
+
+        /* Hiển thị thẻ đầu tiên */
+        .carousel .navbar-nav li:first-child {
+            display: block;
+        }
+
+    .btn-nav-color{
+        background: red;
+        color: white;
+        font-weight: bold;
+    }
+
+        .btn-nav-color:hover{
+            background: none;
+            color: red;
+            border-color: red;
+        }
+
+    .profile-text{
+        color: black;
+        text-decoration: none;
+        transition: 0.5s;
+    }
+        .profile-text:hover{
+            color: red;
+            text-decoration: none;
+        }
+    .profile-link:hover{
+        color: red;
+
+    }
+        .profile-link{
+            transition: 0.5s;
+        }
+
+    .btn-signup{
+        border-color: red;
+        color: red;
+    }
+        .btn-signup:hover {
+            background: red;
+            color: white;
+        }
+    .btn-login{
+        border-color: black;
+        color: black;
+    }
+    .btn-login:hover{
+        background: black;
+        color: white;
+    }
+</style>
+<script>
+    // Close dropdown when clicked outside
+    $(document).on('click', function (e) {
+        if (!$('.dropdown').is(e.target) && $('.dropdown').has(e.target).length === 0) {
+            $('.dropdown-menu').removeClass('show');
+        }
+    });
+
+    // Lấy danh sách các thẻ <li>
+    const listItems = document.querySelectorAll("#carousel .nav-item");
+
+    let currentItemIndex = 0;
+
+    function showNextItem() {
+        listItems[currentItemIndex].style.display = "none"; // Ẩn thẻ hiện tại
+        currentItemIndex = (currentItemIndex + 1) % listItems.length; // Tăng chỉ số thẻ tiếp theo
+        listItems[currentItemIndex].style.display = "block"; // Hiển thị thẻ tiếp theo
+    }
+
+    // Tự động chuyển đổi sau mỗi 10 giây
+    setInterval(showNextItem, 10000);
+
+    // Get the button:
+    let mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</html>

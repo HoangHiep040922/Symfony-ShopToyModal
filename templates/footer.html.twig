@@ -1,0 +1,237 @@
+{% block body %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .rowFlex-gallery {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between; /* Chỉnh các phần tử cách đều nhau ngang */
+        }
+
+        .gallery-item {
+            flex: 1; /* Cho phép các item tự giãn chiều rộng theo tỷ lệ bằng nhau */
+            margin: 0; /* Loại bỏ khoảng trống giữa các ảnh */
+            overflow: hidden; /* Loại bỏ phần bị zoom ra ngoài */
+            position: relative; /* Thêm thuộc tính position để phục vụ hiệu ứng phủ trắng */
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            transition: transform 3s;
+        }
+
+        .gallery-item:hover .ls-is-cached{
+            transform: scale(1.1); /* Áp dụng hiệu ứng zoom cho phần tử con */
+        }
+
+        .groupbanner-hover {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s; }
+        .groupbanner-hover:after, .groupbanner-hover:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transition: all 0.5s ease-out 0s;
+            -webkit-transition: all 0.5s ease-in-out 0s;
+            -ms-transition: all 0.5s ease-in-out 0s; }
+        .groupbanner-hover img:not(.lazyload) {
+            transition: opacity 0.3s, transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            -webkit-transition: opacity 0.3s, transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            -ms-transition: opacity 0.3s, transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .groupbanner-hover:hover img:not(.lazyload) {
+            -ms-transform: scale(1.08);
+            -webkit-transform: scale(1.08);
+            transform: scale(1.08); }
+        .groupbanner-hover:hover:before {
+            background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0;
+            bottom: 50%;
+            top: 50%; }
+        .groupbanner-hover:hover:after {
+            background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0;
+            left: 51%;
+            right: 50%; }
+    </style>
+
+    <div class="container mt-3">
+        {% for flash_message in app.session.flashBag.get('notice') %}
+            <div class="alert alert-success">
+                <strong>{{ flash_message }}!!!</strong> A product has been added to the list.!!!
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('error') %}
+            <div class="alert alert-danger">
+                <strong>{{ flash_message }}!!!</strong> A product has been removed from the list.!!!
+            </div>
+        {% endfor %}</div>
+    <section class="section-footer-gallery section-mrtop" style="background: #f8f8f8">
+        <div class="wraptitle-gallery text-center">
+            <div class="container">
+                <div class="section-heading">
+                    <h2 class="hTitle">Follow Japan Figure on Instagram</h2>
+                    <p>@japanfigure.vn</p>
+                </div>
+            </div>
+        </div>
+        <div class="wraplist-container-gallery">
+            <div class="rowFlex-gallery">
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_1_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_1_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_2_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_2_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_3_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_3_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_4_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_4_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_5_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_5_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+                <div class="gallery-item">
+                    <a class="groupbanner-hover" href="//www.instagram.com/japanfigure.vn/" target="_blank" rel="noreferrer">
+                        <img class="ls-is-cached lazyloaded" data-src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_6_img.jpg?v=311" src="//theme.hstatic.net/1000160337/1000885200/14/gallery_item_6_img.jpg?v=311" alt="instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="copyright text-center bg-dark py-2" style="color: #958f91"><br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12 widget-footer" style="text-align: left">
+                    <h4 class="title-footer" style="color: white">Giới thiệu Japan Figure</h4><br>
+                    <div class="content-footer block-collapse row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <p>Giúp các bạn trẻ Việt Nam dễ dàng tiếp cận với mô hình figure Nhật Bản</p>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="address-footer">
+                                    <p class="contact-1"><b>Địa chỉ:</b> Quận 10, Tp. Hồ Chí Minh. <br>
+                                        Japan Figure chưa có không gian trưng bày, bạn vui lòng hẹn trước khi đến</p>
+                                    <p class="contact-2"><b>Điện thoại:</b> 090 8268 007</p>
+                                    <p class="contact-4"><b>Email:</b> support@japanfigure.vn</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3 col-sm-6 col-xs-12 widget-footer" style="text-align: left">
+                    <h4 class="title-footer" style="color: white">Hỗ trợ khách hàng</h4><br>
+                    <div class="content-footer block-collapse">
+                        <ul class="footerNav-link">
+
+                            <li class="item footerNav-text">
+                                <a href="#" class="footerNav-text" title="Tìm kiếm">Tìm kiếm</a>
+                            </li>
+
+                            <li class="item footerNav-text">
+                                <a href="#" class="footerNav-text" title="Giới thiệu">Giới thiệu</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 col-xs-12 widget-footer">
+
+                    <h4 class="title-footer" style="color: white">Chăm sóc khách hàng</h4><br>
+                    <div class="content-footer block-collapse">
+                        <div class="footerInfo-hline d-flex">
+                            <div class="box-icon p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16" style="color: white; font-size: 40px">
+                                    <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                                </svg>
+                            </div>
+                            <div class="box-content p-2" style="text-align: left">
+                                <span style="color: white; font-size: 20px">0908268007</span>
+                                <u>support@japanfigure.vn</u>
+                            </div>
+                        </div><br>
+
+
+                        <h4 class="fter-title" style="color: white">Follow Japan Figure</h4><br>
+
+                        <div class="footerNav-container">
+                            <ul class="footerNav-social">
+                                <li><a href="https://www.facebook.com/japanfigure" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="/" target="_blank" rel="noopener" title="Twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.instagram.com/japanfigure.vn/" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="/" target="_blank" rel="noopener" title="Google Plus" aria-label="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UCoOXLGsa5joTIO05WF7ZGGA/videos" target="_blank" rel="noopener" title="Youtube" aria-label="Youtube"><i class="fa fa-youtube-play"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div><hr>
+        <div class="copyright text-center bg-dark text-white py-2">
+            <p class="font-rale font-size-14" style="color: #958f91">Copyrights &copy; 2023. Desing By <a href="#" class="color-second" style="color: red; text-decoration: none;  font-weight: bold">NHÂN</a></p>
+        </div>
+    </div>
+    <style>
+        .footerNav-text {
+            text-decoration: none;
+            color: #958f91;
+        }
+        .footerNav-text:hover {
+            text-decoration: none;
+            color: red;
+        }
+
+        .footerNav-container {
+            display: flex; /* Sử dụng flexbox để liên kết nằm ngang */
+        }
+
+        .footerNav-social {
+            list-style: none; /* Ẩn các dấu chấm */
+            display: flex; /* Sử dụng flexbox để liên kết nằm ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+        }
+
+        .footerNav-social li {
+            margin: 0 5px; /* Khoảng cách giữa các liên kết */
+            padding: 5px; /* Khoảng cách bọc xung quanh icon */
+            border: 1px solid #ccc; /* Viền xám cho icon */
+            border-radius: 5px; /* Bo tròn viền để tạo hình tròn */
+            width: 40px; /* Đặt kích thước của icon */
+        }
+
+        .footerNav-social li a {
+            text-decoration: none; /* Ẩn dấu gạch chân */
+            color: #958f91; /* Màu chữ của icon */
+        }
+
+        .footerNav-social li:hover {
+            color: white; /* Màu trắng cho icon khi hover */
+            border-color: red; /* Viền đỏ khi hover */
+            background: red; /* Nền đỏ khi hover */
+        }
+    </style>
+
+{% endblock %}
